@@ -36,11 +36,11 @@ if st.button("Submit"):
     prediction = rf_clf.predict_proba(x)[0, 1]
         # Output prediction
     st.success(f"Risk of early death: {'{:.2%}'.format(round(prediction, 5))}")
-    if prediction < 0.627:
+    if prediction < 0.569:
         st.success(f"Risk group: low-risk group")
     else:
         st.error(f"Risk group: High-risk group")
-    if prediction < 0.627:
+    if prediction < 0.569:
         st.success(f"For patients with a low early mortality risk in the ICU who have suffered orthopaedic trauma, a conservative treatment plan focused on pain management, physical therapy, and early mobilization is recommended. The primary goal is to promote patient comfort, prevent complications, and facilitate a smooth recovery process. Pain management plays a crucial role in the management of these patients. Adequate pain control is essential to ensure patient comfort and facilitate early mobilization. This may involve the use of analgesic medications, regional anesthesia techniques, or non-pharmacological interventions. Close monitoring of vital signs, pain levels, wound healing, and functional status is essential in detecting any potential complications or changes in the patient's condition. This allows for timely intervention and modification of the treatment plan if necessary. Regular follow-up appointments with orthopaedic surgeons or other healthcare providers involved in the patient's care are also scheduled to assess progress, address any concerns, and ensure continuity of care.")
     else:
         st.error(f"Recommendations: In the case of high early mortality risk, a multidisciplinary approach is essential. This includes close monitoring of vital signs, prompt identification and management of complications, and early surgical intervention when necessary. Additionally, optimizing pain control, nutritional support, and infection prevention measures are crucial in reducing mortality risk.")
