@@ -16,14 +16,14 @@ Hypertension = st.sidebar.selectbox("Hypertension", ("No", "Yes"))
 Diabetes = st.sidebar.selectbox("Diabetes", ("No", "Yes"))
 Oldmyocardialinfarction= st.sidebar.selectbox("Old myocardial infarction", ("No", "Yes"))
 Firstcreatinine= st.sidebar.slider("Creatinine (mg/dL)", 0.50, 1.50)
-Firstureanitrogen = st.sidebar.slider("Blood urea nitrogen (mg/dL)", 10, 25)
+Firstureanitrogen = st.sidebar.slider("Blood urea nitrogen (mg/dL)", 10, 35)
 Redbloodcell = st.sidebar.slider("Red blood cell (m/uL)", 3.00, 5.00)
-Plateletcount = st.sidebar.slider("Platelet count (K/uL)", 150, 300)
-Heartrate = st.sidebar.slider("Heart rate (BPM)", 50, 1200)
-Resprate = st.sidebar.slider("Respiratory rate (BPM)", 10, 30)
-Temperaturecelsius = st.sidebar.slider("Temperature (celsius)", 35.0, 39.0)
+Plateletcount = st.sidebar.slider("Platelet count (K/uL)", 150, 350)
+Heartrate = st.sidebar.slider("Heart rate (BPM)", 50, 125)
+Resprate = st.sidebar.slider("Respiratory rate (BPM)", 8, 30)
+Temperaturecelsius = st.sidebar.slider("Temperature (celsius)", 34.0, 39.0)
 SAPSII = st.sidebar.slider("SAPSII", 10, 50)
-SOFA = st.sidebar.slider("SOFA", 1, 10)
+SOFA = st.sidebar.slider("SOFA", 0, 10)
 
 if st.button("Submit"):
     rf_clf = jl.load("Xgbc_clf_final_round-web.pkl")
@@ -35,17 +35,15 @@ if st.button("Submit"):
     # Get prediction
     prediction = rf_clf.predict_proba(x)[0, 1]
         # Output prediction
-    st.text(f"Risk of early death: {'{:.2%}'.format(round(prediction, 5))}")
+    st.success(f"Risk of early death: {'{:.2%}'.format(round(prediction, 5))}")
     if prediction < 0.627:
         st.success(f"Risk group: low-risk group")
     else:
-        st.success(f"Risk group: High-risk group")
+        st.error(f"Risk group: High-risk group")
     if prediction < 0.627:
-        st.success(f"Recommendations: ")
-        st.markdown(f"For patients with a low early mortality risk in the ICU who have suffered orthopaedic trauma, a conservative treatment plan focused on pain management, physical therapy, and early mobilization is recommended. The primary goal is to promote patient comfort, prevent complications, and facilitate a smooth recovery process. Pain management plays a crucial role in the management of these patients. Adequate pain control is essential to ensure patient comfort and facilitate early mobilization. This may involve the use of analgesic medications, regional anesthesia techniques, or non-pharmacological interventions. Close monitoring of vital signs, pain levels, wound healing, and functional status is essential in detecting any potential complications or changes in the patient's condition. This allows for timely intervention and modification of the treatment plan if necessary. Regular follow-up appointments with orthopaedic surgeons or other healthcare providers involved in the patient's care are also scheduled to assess progress, address any concerns, and ensure continuity of care.")
+        st.success(f"For patients with a low early mortality risk in the ICU who have suffered orthopaedic trauma, a conservative treatment plan focused on pain management, physical therapy, and early mobilization is recommended. The primary goal is to promote patient comfort, prevent complications, and facilitate a smooth recovery process. Pain management plays a crucial role in the management of these patients. Adequate pain control is essential to ensure patient comfort and facilitate early mobilization. This may involve the use of analgesic medications, regional anesthesia techniques, or non-pharmacological interventions. Close monitoring of vital signs, pain levels, wound healing, and functional status is essential in detecting any potential complications or changes in the patient's condition. This allows for timely intervention and modification of the treatment plan if necessary. Regular follow-up appointments with orthopaedic surgeons or other healthcare providers involved in the patient's care are also scheduled to assess progress, address any concerns, and ensure continuity of care.")
     else:
-        st.success(f"Recommendations: ")
-        st.markdown(f"In the case of high early mortality risk, a multidisciplinary approach is essential. This includes close monitoring of vital signs, prompt identification and management of complications, and early surgical intervention when necessary. Additionally, optimizing pain control, nutritional support, and infection prevention measures are crucial in reducing mortality risk.")
+        st.error(f"Recommendations: In the case of high early mortality risk, a multidisciplinary approach is essential. This includes close monitoring of vital signs, prompt identification and management of complications, and early surgical intervention when necessary. Additionally, optimizing pain control, nutritional support, and infection prevention measures are crucial in reducing mortality risk.")
 
     st.subheader('Model explanation: contribution of each model predictor')
     star = pd.read_csv('X_train.csv', low_memory=False)
@@ -67,4 +65,4 @@ if st.button("Submit"):
 
 
 st.subheader('About the model')
-st.markdown('This online calculator is freely accessible and utilizes the advanced extreme gradient boosting machine algorithm. Internal validation has demonstrated the model's exceptional performance, achieving an impressive AUC of 0.974 (95%CI: 0.959-0.983). However, it is crucial to emphasize that this model was developed solely for research purposes. Therefore, clinical treatment decisions for bone metastases should not be solely reliant on the AI platform. Instead, it is recommended to consider the model's predictions as an additional tool to aid in decision-making, complementing the expertise and judgment of healthcare professionals.')
+st.markdown('This online calculator is freely accessible and utilizes the advanced extreme gradient boosting machine algorithm. Validation of the model has demonstrated exceptional performance, achieving an impressive AUC of 0.974 (95%CI: 0.959-0.983). However, it is crucial to emphasize that this model was developed solely for research purposes. Therefore, clinical treatment decisions for bone metastases should not be solely reliant on the AI platform. Instead, it is recommended to consider the model’s predictions as an additional tool to aid in decision-making, complementing the expertise and judgment of healthcare professionals.')
